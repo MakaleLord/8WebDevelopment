@@ -1,0 +1,66 @@
+<html> 
+  
+<head>
+  <title>Quick Notes</title>
+  <link href="style.css" type= "text/css" rel="stylesheet">
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Roboto&display=swap" rel="stylesheet">
+  
+  </head>
+  
+  <body> 
+    <h1> Quick Notes </h1>
+    <div class="options">
+      <button id="add">Add note</button>
+      <button id='save'>Save Notes</button>
+    </div>
+    
+    <div class="note-template">
+      <div class='note'>
+        <img src="delete.png" class="delete-icon">
+        <h3 class='title' contenteditable="true">Hello</h3>
+       <p class='content' contenteditable="true">Go for a jog</p>
+      </div>
+    </div>
+    <div class="notebook"></div>
+    <script>
+      $('.note-template').hide();
+      
+      function addNote(){
+        var noteHtml = $('.note-template').html();
+        $('.notebook').prepend(noteHtml);
+        $('.delete-icon').click(deleteNote);
+        saveNotes();
+      }
+      
+      $('#add').click(addNote);
+      
+      function deleteNote(eventObj){
+        var clickedIcon = eventObj.currentTarget;
+        var note = $(clickedIcon).parent();
+        note.remove();
+        saveNotes();
+      }
+      function saveNotes(){
+        var allNotes = $('.notebook').children();
+        var length = allNotes.length;
+        localStorage.setItem('totalNotes', length);
+        for(var counter=0; counter<allNotes.length; counter++){
+          var currentNote = allNotes[counter];
+          var note = $(currentNote).html();
+          localStorage.setItem('note'+counter,note);
+        }
+      }
+      $('#save').click(saveNotes);
+      
+      var total = localStorage.getItem('totalNotes');
+      for(i=0; i<total; i++){
+        var note = localStorage.getItem('note'+i);
+        var noteHtml = "<div class='note'>"+note+"</div>"
+        $('.notebook').append(noteHtml);
+      }
+      
+    </script>
+  </body>
+    
+    </html><script type="application/javascript" src="/share.js"></script>
